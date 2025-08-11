@@ -200,21 +200,6 @@ interface UsuarioGh {
 - **5000 requests/hora** para usuarios autenticados
 - La aplicación maneja automáticamente los límites de rate limiting
 
-Accesibilidad
-
-**Características implementadas**
-- **Navegación por teclado** - Todos los elementos son accesibles
-- **Screen readers** - Textos alternativos y labels apropiados
-- **ARIA attributes** - `aria-live`, `aria-busy`, `role` para estados
-- **Color contrast** - Cumple estándares WCAG AA
-- **Focus management** - Indicadores visuales claros
-
-
-Responsive Design
-
-### **Breakpoints**
-- **Desktop**: > 480px - Layout completo con elementos en línea
-- **Mobile**: ≤ 480px - Layout vertical optimizado para touch
 
 ## Diseño
 
@@ -228,21 +213,11 @@ Responsive Design
   --shadow: 0 6px 14px rgba(0,0,0,.08);
 }
 ```
+Responsive Design
 
-### **Principios de diseño**
-- **Minimalismo** - Interfaz limpia sin distracciones
-- **Consistencia** - Patrones visuales uniformes
-- **Feedback** - Estados claros para cada acción
-- **Performance** - Animaciones suaves y optimizadas
-
-## Performance
-
-### **Optimizaciones implementadas**
-- **Lazy rendering** - Componentes se renderizan solo cuando es necesario
-- **Request cancellation** - AbortController para evitar race conditions
-- **CSS optimizado** - Variables CSS para reutilización
-- **Tree shaking** - Solo el código necesario en el bundle final
-- **Minimal dependencies** - Zero dependencias en runtime
+### **Breakpoints**
+- **Desktop**: > 480px - Layout completo con elementos en línea
+- **Mobile**: ≤ 480px - Layout vertical optimizado para touch
 
 
 ## Tecnologías Utilizadas
