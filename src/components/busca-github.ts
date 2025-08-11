@@ -44,10 +44,13 @@ class BuscaGitHub extends HTMLElement {
                 display: grid;
                 place-items: center;
                 gap: 1rem;
+                width: min(560px, 100%);
+                padding: 0 0 0 0.5rem;
             }
             .controls {
                 display: flex;
                 gap: .5rem;
+                width: 100%;
             }
 
             #input-main {
@@ -56,8 +59,10 @@ class BuscaGitHub extends HTMLElement {
                 border-radius: var(--radius);
                 background: #fff;
                 color: var(--text);
-                min-width: 260px;
+                min-width: 0;
                 box-shadow: var(--shadow);
+                width: 100%;
+                box-sizing: border-box;
             }
 
             #input-main:focus {
@@ -74,6 +79,7 @@ class BuscaGitHub extends HTMLElement {
                 box-shadow: var(--shadow);
                 cursor: pointer;
                 transition: background .15s ease, transform .05s ease;
+                white-space: nowrap;
             }
 
             #boton-main:hover {
@@ -87,6 +93,10 @@ class BuscaGitHub extends HTMLElement {
             #boton-main:disabled {
                 opacity: .6;
                 cursor: not-allowed;
+            }
+            @media (max-width: 480px) {
+                .controls { flex-direction: column; align-items: stretch; }
+                #boton-main { width: 100%; }
             }
                 
         </style>

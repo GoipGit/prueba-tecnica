@@ -46,7 +46,7 @@ export class EstadoMensaje extends HTMLElement {
         this.root.innerHTML = `
         <style>
           :host([hidden]) { display: none; }
-          .wrap { padding: .75rem 1rem; border-radius: .5rem; font-size: .9rem; }
+          .wrap { padding: .75rem 1rem; border-radius: .5rem; font-size: .9rem; max-width: min(560px, 100%); margin: .5rem auto 0; }
           :host([type="info"]) .wrap { background: #e8f0fe; color: #0b316e; }
           :host([type="success"]) .wrap { background: #e6f4ea; color: #0f5132; }
           :host([type="error"]) .wrap { background: #fdecea; color: #842029; }

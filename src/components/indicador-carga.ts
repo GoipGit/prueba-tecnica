@@ -48,6 +48,9 @@ class IndicadorCarga extends HTMLElement {
           border-radius: 50%;
           animation: spin 0.5s linear infinite;
         }
+        @media (max-width: 480px) {
+          .spinner { width: 1.1rem; height: 1.1rem; }
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .sr-only {

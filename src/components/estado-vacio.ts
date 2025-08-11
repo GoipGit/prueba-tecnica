@@ -56,6 +56,8 @@ export class EstadoVacio extends HTMLElement {
               border-radius: .75rem;
               color: var(--empty-fg, rgba(0,0,0,.65));
               background: var(--empty-bg, transparent);
+              width: min(560px, 100%);
+              margin: .5rem auto 0;
             }
             .icon {
               font-size: 2rem;
@@ -72,6 +74,9 @@ export class EstadoVacio extends HTMLElement {
               font-size: .95rem;
               opacity: .9;
               max-width: 40ch;
+            }
+            @media (max-width: 480px) {
+              .wrap { padding: 1rem; }
             }
           </style>
           <div class="wrap" role="status" aria-live="polite" aria-atomic="true">

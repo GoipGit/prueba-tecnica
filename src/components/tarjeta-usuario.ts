@@ -52,7 +52,7 @@ export class TarjetaUsuario extends HTMLElement {
                   border: var(--card-border);
                   box-shadow: var(--card-shadow);
                   background-color: var(--card-bg);
-                  max-width: 420px;
+                  width: min(420px, 90%);
                   text-align: center;
                   margin: 1.25rem auto 0; /* separa la tarjeta del input */
                 }
@@ -107,6 +107,10 @@ export class TarjetaUsuario extends HTMLElement {
                   color: inherit;
                   text-decoration: underline;
                   outline-offset: 3px;
+                }
+                @media (max-width: 480px) {
+                  .tarjeta-usuario { margin-top: 1rem; padding: 1rem; max-width: 341px; margin-left: 0.5rem; }
+                  .name { font-size: 1.05rem; }
                 }
             </style>
             <div class="tarjeta-usuario">
