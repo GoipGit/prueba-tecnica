@@ -1,4 +1,4 @@
-class IndicadorCarga extends HTMLElement {
+export class IndicadorCarga extends HTMLElement {
   static get observedAttributes() {
     return ['active']
   }
@@ -69,7 +69,7 @@ class IndicadorCarga extends HTMLElement {
   }
 
   private updateAccessibility() {
-    const status = this.root.querySelector('.status') as HTMLElement | null
+    const status = this.root.querySelector('.status')
     if (!status) return
     status.setAttribute('aria-busy', this.active ? 'true' : 'false')
   }

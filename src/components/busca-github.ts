@@ -1,13 +1,11 @@
 import { fetchUsuarioGh } from '../services/github-service';
 import './indicador-carga';
 import { EVT_USUARIO_ERROR, EVT_USUARIO_SUCCESS } from '../types/events';
-import type { FetchUserResult } from '../types/github';
+import type { FetchUserResult, UsuarioGh } from '../types/github';
 import './tarjeta-usuario';
 import type { TarjetaUsuario } from './tarjeta-usuario'
-import './estado-mensaje'
-import type { EstadoMensaje } from './estado-mensaje';
-import './estado-vacio'
-import type { EstadoVacio } from './estado-vacio';
+import './estado-display'
+import type { EstadoDisplay } from './estado-display';
 
 class BuscaGitHub extends HTMLElement {
     private static readonly GH_USERNAME_RE = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
@@ -17,11 +15,10 @@ class BuscaGitHub extends HTMLElement {
     private form!: HTMLFormElement;
     private input!: HTMLInputElement;
     private boton!: HTMLButtonElement;
-    private status!: EstadoMensaje;
+    private status!: EstadoDisplay;
     private loader!: HTMLElement;
     private submitHandler: ((e: Event) => void) | undefined;
     private tarjeta!: TarjetaUsuario
-    private estadoVacio!: EstadoVacio
     private inputHandler: ((e: Event) => void) | undefined
 
     constructor() {
@@ -107,10 +104,9 @@ class BuscaGitHub extends HTMLElement {
             </form>
         </div>
 
-        <estado-vacio id="vacio" title="Busca usuarios" description="Ingresa un nombre de usuario de GitHub." icon="🔎"></estado-vacio>
+        <estado-display id="status" type="empty" title="Busca usuarios" description="Ingresa un nombre de usuario de GitHub." icon="🔎"></estado-display>
         <indicador-carga id="loader"></indicador-carga>
         <tarjeta-usuario id="tarjeta-usuario"></tarjeta-usuario>
-        <estado-mensaje id="status"></estado-mensaje>
         `
     }
     private cacheRefs() {
@@ -119,8 +115,7 @@ class BuscaGitHub extends HTMLElement {
         this.boton = this.shadowRoot!.querySelector('#boton-main')!;
         this.loader = this.shadowRoot!.querySelector('#loader')!;
         this.tarjeta = this.shadowRoot!.querySelector('#tarjeta-usuario')! as TarjetaUsuario;
-        this.status = this.shadowRoot!.querySelector('#status')! as EstadoMensaje;
-        this.estadoVacio = this.shadowRoot!.querySelector('#vacio')! as EstadoVacio;
+        this.status = this.shadowRoot!.querySelector('#status')! as EstadoDisplay;
     }
     private attachEvents() {
         this.submitHandler = (e) => this.onSubmit(e)
@@ -129,13 +124,10 @@ class BuscaGitHub extends HTMLElement {
             const v = this.input.value.trim()
             this.boton.disabled = this.cargando || v.length === 0
             if (v.length === 0) {
-                this.tarjeta.usuario = null
-                this.status.clear()
-                this.estadoVacio.hidden = false
+                this.limpiar()
             }
         }
         this.input.addEventListener('input', this.inputHandler)
-        // estado inicial del botón
         this.boton.disabled = this.input.value.trim().length === 0
     }
     private detachEvents() {
@@ -157,36 +149,60 @@ class BuscaGitHub extends HTMLElement {
         else this.form.removeAttribute('aria-busy')
         this.loader?.toggleAttribute('active', isLoading)
     }
-    private async onSubmit(e: Event) {
-        e.preventDefault()
-        const usuario = this.input.value.trim()
-        if (this.cargando) return
-        if (!usuario) {
-            this.status.show('error', 'Ingresa un nombre de usuario', 'assertive')
-            this.tarjeta.usuario = null
-            this.estadoVacio.hidden = false
-            this.input.focus(); this.input.select()
-            this.boton.disabled = true
-            return
-        }
-        if (!this.isValidUsername(usuario)) {
-            this.status.show('error', 'Nombre de usuario inválido')
-            this.tarjeta.usuario = null    
-            this.estadoVacio.hidden = false      
-            this.input.focus()
-            this.input.select()
-            return
-        }
 
+    private limpiar() {
+        this.tarjeta.usuario = null
+        this.status.showState('Busca usuarios', 'Ingresa un nombre de usuario de GitHub.', '🔎')
+    }
+
+    private showUserResult(usuario: UsuarioGh) {
+        this.status.clear()
+        this.tarjeta.usuario = usuario
+    }
+
+    private showError(message: string, assertive: boolean = false) {
+        this.tarjeta.usuario = null
+        this.status.showMessage('error', message, assertive ? 'assertive' : 'polite')
+    }
+    private focusInput() {
+        this.input.focus()
+        this.input.select()
+    }
+    private validaInput(usuario: string): boolean {
+        if (!usuario) {
+            this.showError('Ingresa un nombre de usuario', true)
+            this.focusInput()
+            this.boton.disabled = true
+            return false
+        }
+        
+        if (!this.usuarioValido(usuario)) {
+            this.showError('Nombre de usuario inválido')
+            this.focusInput()
+            return false
+        }
+        
+        return true
+    }
+    private antesdBuscar() {
         this.abortController?.abort()
         this.abortController = new AbortController()
         this.tarjeta.usuario = null
-        this.estadoVacio.hidden = true
         this.setLoading(true)
-        this.status.show('info', 'Buscando…', 'polite')
+        this.status.showMessage('info', 'Buscando…', 'polite')
+    }
+    private async onSubmit(e: Event) {
+        e.preventDefault()
+        const usuario = this.input.value.trim()
+        
+        if (this.cargando) return
+        
+        if (!this.validaInput(usuario)) return
+        
+        this.antesdBuscar()
 
         try {
-            const res = await fetchUsuarioGh(usuario, this.abortController.signal)
+            const res = await fetchUsuarioGh(usuario, this.abortController?.signal)
             this.handleResult(res)
         } finally {
             this.setLoading(false)
@@ -199,9 +215,7 @@ class BuscaGitHub extends HTMLElement {
             this.dispatchEvent(new CustomEvent(EVT_USUARIO_SUCCESS, {
                 detail: { data: res.data }, bubbles: true, composed: true
             }))
-            this.status.clear()
-            this.tarjeta.usuario = res.data
-            this.estadoVacio.hidden = true
+            this.showUserResult(res.data)
             return
         }
 
@@ -209,13 +223,14 @@ class BuscaGitHub extends HTMLElement {
         this.dispatchEvent(new CustomEvent(EVT_USUARIO_ERROR, {
             detail: { error: res }, bubbles: true, composed: true
         }))
-        this.status.show('error',
-            res.kind === 'http' ? `Error HTTP ${res.status}: ${res.message ?? ''}` :
-                `Error de red: ${res.message}`)
-        this.tarjeta.usuario = null
-        this.estadoVacio.hidden = false
+        
+        const errorMessage = res.kind === 'http' 
+            ? `Error HTTP ${res.status}: ${res.message ?? ''}`
+            : `Error de red: ${res.message}`
+            
+        this.showError(errorMessage)
     }
-    private isValidUsername(u: string): boolean {
+    private usuarioValido(u: string): boolean {
         return BuscaGitHub.GH_USERNAME_RE.test(u)
     }
 }

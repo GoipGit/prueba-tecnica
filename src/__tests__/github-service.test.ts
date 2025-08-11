@@ -18,7 +18,7 @@ describe('GitHub Service', () => {
     html_url: 'https://github.com/octocat'
   }
 
-  it('should return user data on success', async () => {
+  it('devolver datos del usuario en caso de éxito', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
@@ -44,7 +44,7 @@ describe('GitHub Service', () => {
     )
   })
 
-  it('should handle 404 error', async () => {
+  it('maneja error 404', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       status: 404,
@@ -61,7 +61,7 @@ describe('GitHub Service', () => {
     })
   })
 
-  it('should handle 403 rate limit with headers', async () => {
+  it('maneja límite de solicitudes 403 con encabezados', async () => {
     const mockHeaders = new Map([
       ['x-ratelimit-remaining', '0'],
       ['x-ratelimit-reset', '1640995200']
@@ -85,7 +85,7 @@ describe('GitHub Service', () => {
     })
   })
 
-  it('should handle network errors', async () => {
+  it('maneja errores de red', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
     const result = await fetchUsuarioGh('user')
@@ -97,7 +97,7 @@ describe('GitHub Service', () => {
     })
   })
 
-  it('should handle abort signal', async () => {
+  it('maneja señal de abortación', async () => {
     const abortError = new Error('Aborted')
     abortError.name = 'AbortError'
     mockFetch.mockRejectedValueOnce(abortError)
