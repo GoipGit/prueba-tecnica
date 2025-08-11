@@ -1,4 +1,4 @@
-#Buscar Usuario de Github
+Buscar Usuario de Github
 
 Una aplicación web moderna que permite buscar usuarios de GitHub y visualizar sus perfiles de manera elegante. Construida con **Web Components** y **TypeScript** siguiendo las mejores prácticas de desarrollo frontend.
 
@@ -7,25 +7,24 @@ Una aplicación web moderna que permite buscar usuarios de GitHub y visualizar s
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
 
-##Características
+Características
 
-###**Funcionalidades Principales**
+**Funcionalidades Principales**
 - **Búsqueda de usuarios** - Busca cualquier usuario de GitHub por nombre
 - **Responsive Design** - Optimizada para desktop y móvil
 - **Tiempo real** - Búsqueda instantánea con validación
 - **UI moderna** - Interfaz limpia y atractiva
 - **Accesible** - Cumple estándares WCAG con ARIA
 
-###**Características Técnicas**
+**Características Técnicas**
 - **Web Components** - Componentes reutilizables y modulares
 - **TypeScript** - Código tipado y robusto
 - **Testing completo** - Suite de tests con Jest
 - **Build optimizado** - Empaquetado con Vite
 - **Zero dependencies** - Sin frameworks externos
 
-##Arquitectura
 
-###**Estructura del proyecto**
+**Estructura del proyecto**
 ```
 prueba-tecnica/
 ├── src/
@@ -49,7 +48,7 @@ prueba-tecnica/
 └── README.md               # Este archivo
 ```
 
-###**Componentes Web**
+**Componentes Web**
 
 #### `<busca-github>`
 Componente principal que orquesta toda la funcionalidad:
@@ -78,13 +77,13 @@ Spinner de carga minimalista:
 - Visibilidad controlada por atributos
 - Optimizado para performance
 
-##Inicio Rápido
+Inicio Rápido
 
-###**Requisitos**
+**Requisitos**
 - **Node.js** 18+ 
 - **npm** 9+
 
-###**Instalación**
+**Instalación**
 
 1. **Clona el repositorio**
 ```bash
@@ -107,15 +106,15 @@ npm run dev
 http://localhost:5173
 ```
 
-##Scripts Disponibles
+Scripts Disponibles
 
-###**Desarrollo**
+**Desarrollo**
 ```bash
 # Servidor de desarrollo con hot reload
 npm run dev
 
 ```
-###**Testing**
+**Testing**
 ```bash
 # Ejecutar todos los tests
 npm test
@@ -127,7 +126,7 @@ npm run test:watch
 npm run test:coverage
 ```
 
-##Testing
+Testing
 
 ### **Cobertura de Tests**
 - **16 tests** distribuidos en 3 test suites
@@ -157,7 +156,7 @@ npm run test:coverage
 - ✅ Estados híbridos con múltiples elementos
 - ✅ Limpieza y ocultación automática
 
-###**Ejecutar Tests**
+**Ejecutar Tests**
 ```bash
 # Tests una vez
 npm test
@@ -171,12 +170,12 @@ npm run test:coverage
 
 ## API de GitHub
 
-###**Endpoint utilizado**
+**Endpoint utilizado**
 ```
 GET https://api.github.com/users/{username}
 ```
 
-###**Headers recomendados**
+**Headers recomendados**
 ```javascript
 {
   'Accept': 'application/vnd.github+json',
@@ -184,7 +183,7 @@ GET https://api.github.com/users/{username}
 }
 ```
 
-###**Datos consumidos**
+**Datos consumidos**
 ```typescript
 interface UsuarioGh {
   login: string           // Nombre de usuario
@@ -196,58 +195,30 @@ interface UsuarioGh {
 }
 ```
 
-###**Limitaciones de la API**
+**Limitaciones de la API**
 - **60 requests/hora** para usuarios no autenticados
 - **5000 requests/hora** para usuarios autenticados
 - La aplicación maneja automáticamente los límites de rate limiting
 
-##Accesibilidad
+Accesibilidad
 
-###**Características implementadas**
+**Características implementadas**
 - **Navegación por teclado** - Todos los elementos son accesibles
 - **Screen readers** - Textos alternativos y labels apropiados
 - **ARIA attributes** - `aria-live`, `aria-busy`, `role` para estados
 - **Color contrast** - Cumple estándares WCAG AA
 - **Focus management** - Indicadores visuales claros
 
-###**Técnicas utilizadas**
-```html
-<!-- Estados live para screen readers -->
-<div role="status" aria-live="polite" aria-atomic="true">
-  Buscando usuario...
-</div>
 
-<!-- Alerts para errores críticos -->
-<div role="alert" aria-live="assertive">
-  Error: Usuario no encontrado
-</div>
+Responsive Design
 
-<!-- Imágenes con texto alternativo descriptivo -->
-<img alt="Avatar de octocat" src="...">
-```
-
-##Responsive Design
-
-### 🎨 **Breakpoints**
+### **Breakpoints**
 - **Desktop**: > 480px - Layout completo con elementos en línea
 - **Mobile**: ≤ 480px - Layout vertical optimizado para touch
 
-###**Técnicas CSS utilizadas**
-```css
-/* Spacing fluido */
-padding: clamp(1rem, 2vw, 1.5rem);
-
-/* Tamaños adaptativos */
-width: min(420px, 90%);
-
-@media (max-width: 480px) {
-  .controls { flex-direction: column; }
-}
-```
-
 ## Diseño
 
-###**Sistema de colores**
+**Sistema de colores**
 ```css
 :root {
   --bg: #f6f4ee;       
@@ -273,11 +244,6 @@ width: min(420px, 90%);
 - **Tree shaking** - Solo el código necesario en el bundle final
 - **Minimal dependencies** - Zero dependencias en runtime
 
-### **Métricas objetivo**
-- **First Contentful Paint** < 1.5s
-- **Largest Contentful Paint** < 2.5s
-- **Cumulative Layout Shift** < 0.1
-- **Time to Interactive** < 3s
 
 ## Tecnologías Utilizadas
 
